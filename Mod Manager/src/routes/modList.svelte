@@ -415,6 +415,22 @@
 					}
 				}}
 			>
+				Apply 2
+			</Button>
+			<Button
+				kind="primary"
+				style={changed && !deployFinished ? "background-color: green" : ""}
+				icon={Rocket}
+				on:click={() => {
+					if (sortMods()) {
+						deployOutput = ""
+						deployFinished = false
+						window.ipc.send("deploy")
+					} else {
+						dependencyCycleModalOpen = true
+					}
+				}}
+			>
 				Apply
 			</Button>
 		</div>
