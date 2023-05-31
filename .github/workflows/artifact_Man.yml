@@ -1,4 +1,4 @@
-name: Create Artifact
+name: Create Artifact (Mod Manager)
 
 on:
   workflow_dispatch
