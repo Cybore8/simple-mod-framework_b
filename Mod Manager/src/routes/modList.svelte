@@ -234,6 +234,28 @@
 			addMod()
 		})
 	}
+	
+	function zclearcache() {
+						rm(
+							joinPaths(
+								'..',
+								'cache'
+							),
+							{
+								recursive: true,
+								force: true
+							},
+							error => {
+								if(error) {
+									cacheClearError = error
+									setInterval(() => cacheClearError = null, 6000)
+									return
+								}
+								cacheClearedSuccessfully = true
+								setInterval(() => cacheClearedSuccessfully = false, 4000)
+							}
+						)
+	}
 
 	async function installRPKGMod() {
 		rpkgModExtractionInProgress = true
@@ -403,19 +425,12 @@
 			</div>
 			<Button
 				kind="primary"
-				style={changed && !deployFinished ? "background-color: green" : ""}
-				icon={Rocket}
+				icon={TrashCan}
 				on:click={() => {
-					if (sortMods()) {
-						deployOutput = ""
-						deployFinished = false
-						window.ipc.send("deploy")
-					} else {
-						dependencyCycleModalOpen = true
-					}
+					zclearcache()
 				}}
 			>
-				Apply 2
+				Clear Cache
 			</Button>
 			<Button
 				kind="primary"
@@ -739,6 +754,6 @@
 	}
 
 	:global(.bx--snippet.bx--snippet--single) {
-		background-color: #262626;
+		background-color: #04092b;
 	}
 </style>
