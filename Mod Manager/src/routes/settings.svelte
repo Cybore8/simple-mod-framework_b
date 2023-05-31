@@ -108,6 +108,9 @@
 									  }
 									: { content: undefined, delay: 9999999999999999 }}
 							>
+								<RadioButtonGroup
+									legendText={option.group}
+								/>	
 								<Checkbox
 									labelText={option.name}
 									checked={config.modOptions[mod.id].includes(option.name)}
