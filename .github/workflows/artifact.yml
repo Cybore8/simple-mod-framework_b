@@ -1,7 +1,7 @@
 name: Create Artifact
 
 on:
-  push
+  workflow_dispatch
 
 jobs:
   build:
