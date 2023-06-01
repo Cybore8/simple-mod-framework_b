@@ -4,8 +4,13 @@
 
 	import SortableList from "svelte-sortable-list"
 	import json5 from "json5"
-	import { Button, CodeSnippet, InlineNotification, Modal, ProgressBar, Search } from "carbon-components-svelte"
+	import { Button, CodeSnippet, InlineNotification, Modal, ProgressBar, Search, ToastNotification } from "carbon-components-svelte"
 	import AnsiToHTML from "ansi-to-html"
+	
+	const { rm } = window.originalFs
+	const { join: joinPaths } = window.path
+	let cacheClearedSuccessfully = false
+	let cacheClearError: any = null
 
 	const convertAnsi = new AnsiToHTML({
 		newline: true,
@@ -416,6 +421,20 @@
 				</div>
 			{/each}
 		</div>
+	</div>
+	<div class="absolute top-5 left-5 flex flex-col">
+	{#if cacheClearedSuccessfully}
+		<ToastNotification
+			kind="success"
+			title="Cache cleared"
+			subtitle="The cache has successfully been cleared." />
+	{/if}
+	{#if cacheClearError != null}
+		<ToastNotification
+			kind="error"
+			title="Failed to clear cache"
+			subtitle={cacheClearError.message} />
+	{/if}
 	</div>
 	<div class="w-full">
 		<div class="flex gap-4 items-center justify-center" transition:scale>
