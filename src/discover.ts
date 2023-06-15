@@ -148,6 +148,7 @@ export default async function discover(): Promise<{ [x: string]: { hash: string;
 				for (const option of manifest.options.filter(
 					(a) =>
 						(a.type === OptionType.checkbox && config.modOptions[manifest.id].includes(a.name)) ||
+						(a.type === OptionType.groupbox && config.modOptions[manifest.id].includes(`${a.group}:${a.name}`)) ||																		
 						(a.type === OptionType.select && config.modOptions[manifest.id].includes(`${a.group}:${a.name}`)) ||
 						(a.type === OptionType.conditional &&
 							compileExpression(a.condition, { customProp: useDotAccessOperatorAndOptionalChaining })({
@@ -189,6 +190,9 @@ export default async function discover(): Promise<{ [x: string]: { hash: string;
 
 					manifest.thumbs || (manifest.thumbs = [])
 					option.thumbs && manifest.thumbs.push(...option.thumbs)
+					
+					manifest.thumbs || (manifest.thumbs = [])
+					option.thumbsb && manifest.thumbs.push(...option.thumbsb)
 
 					option.scripts && scripts.push(option.scripts)
 				}
@@ -461,6 +465,7 @@ export default async function discover(): Promise<{ [x: string]: { hash: string;
 									manifest.options.filter(
 										(a) =>
 											(a.type === OptionType.checkbox && config.modOptions[manifest.id].includes(a.name)) ||
+											(a.type === OptionType.groupbox && config.modOptions[manifest.id].includes(`${a.group}:${a.name}`)) ||
 											(a.type === OptionType.select && config.modOptions[manifest.id].includes(`${a.group}:${a.name}`)) ||
 											(a.type === OptionType.conditional &&
 												compileExpression(a.condition, { customProp: useDotAccessOperatorAndOptionalChaining })({
