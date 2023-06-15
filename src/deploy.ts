@@ -2567,24 +2567,27 @@ export default async function deploy(
 
 	for (const stagingChunkFolder of fs.readdirSync(path.join(process.cwd(), "staging"))) {
 		await callRPKGFunction(`-generate_rpkg_quickly_from "${path.join(process.cwd(), "staging", stagingChunkFolder)}" -output_path "${path.join(process.cwd(), "staging")}"`)
-
+		
+		//
+		const fs = require('fs');
+		fs.readFile("param.json", "utf-8", (err, data) => {
+		let jsonData = JSON.parse(data);
+		jsonData.forEach((chunks) => {
+		//	
 		try {
 			fs.copyFileSync(
 				path.join(process.cwd(), "staging", `${stagingChunkFolder}.rpkg`),
 				config.outputToSeparateDirectory
-		//	
-		fs.readFile("param.json", "utf-8", (err, data) => {
-		let jsonData = JSON.parse(data);
-		jsonData.forEach((chunks) => {
-		//		
+
 					? path.join(process.cwd(), "Output", allRPKGTypes[stagingChunkFolder] === "base" ? `${stagingChunkFolder}.rpkg` : `${stagingChunkFolder}patch${chunks.chunk}.rpkg`)
 					: path.join(config.runtimePath, allRPKGTypes[stagingChunkFolder] === "base" ? `${stagingChunkFolder}.rpkg` : `${stagingChunkFolder}patch${chunks.chunk}.rpkg`)
-		//
-		});
-		});
-		//
 			)
-		} catch {
+		} 
+				//
+		});
+		});
+		//
+		catch {
 			await logger.error("Couldn't copy the RPKG files! Make sure the game isn't running when you deploy your mods.")
 		}
 	}

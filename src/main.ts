@@ -211,6 +211,7 @@ async function doTheThing() {
 				const chunkPatchNumberMatches = [...chunkPatchFile.matchAll(/chunk[0-9]*patch([0-9]*)\.rpkg/g)]
 				const chunkPatchNumber = parseInt(chunkPatchNumberMatches[chunkPatchNumberMatches.length - 1][chunkPatchNumberMatches[chunkPatchNumberMatches.length - 1].length - 1])
 		//	
+		const fs = require('fs');
 		fs.readFile("param.json", "utf-8", (err, data) => {
 		let jsonData = JSON.parse(data);
 		jsonData.forEach((chunks) => {
