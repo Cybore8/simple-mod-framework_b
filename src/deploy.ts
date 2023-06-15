@@ -276,6 +276,9 @@ export default async function deploy(
 
 					manifest.thumbs || (manifest.thumbs = [])
 					option.thumbs && manifest.thumbs.push(...option.thumbs)
+					
+					manifest.thumbsb || (manifest.thumbsb = [])
+					option.thumbsb && manifest.thumbsb.push(...option.thumbsb)
 
 					option.scripts && scripts.push(option.scripts)
 				}
