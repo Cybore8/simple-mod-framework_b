@@ -87,6 +87,7 @@ export default async function deploy(
 
 	const packagedefinition: ManifestOptionData["packagedefinition"] = []
 	const thumbs: string[] = []
+	const thumbsb: string[] = []
 
 	const localisation: {
 		language: keyof ManifestOptionData["localisation"]
@@ -2472,6 +2473,11 @@ export default async function deploy(
 			// Manifest patches
 			thumbsContent = thumbsContent.replace(/\[Hitman5\]\n/gi, "[Hitman5]\n" + patch + "\n")
 		}
+		
+		for (const patch of thumbsb) {
+			// Manifest patches
+			thumbsContent = thumbsContent.replace(/\PASSIVE=0]\n/gi, "PASSIVE=0\n" + patch + "\n")
+		}
 
 		fs.writeFileSync(path.join(process.cwd(), "temp", "thumbs.dat.decrypted"), thumbsContent)
 		execCommand(`"Third-Party\\h6xtea.exe" -e --src "${path.join(process.cwd(), "temp", "thumbs.dat.decrypted")}" --dst "${path.join(process.cwd(), "temp", "thumbs.dat.decrypted.encrypted")}"`) // Encrypt thumbs
@@ -2564,35 +2570,20 @@ export default async function deploy(
 		description: "RPKG generation"
 	})
 	configureSentryScope(sentryRPKGGenerationTransaction)
-	
-	//
-		const fs = require('fs');
-		fs.readFile("param.json", "utf-8", (err, data) => {
-		let jsonData = JSON.parse(data);
-		jsonData.forEach((chunks) => {
-	//	
-
 	for (const stagingChunkFolder of fs.readdirSync(path.join(process.cwd(), "staging"))) {
 		await callRPKGFunction(`-generate_rpkg_quickly_from "${path.join(process.cwd(), "staging", stagingChunkFolder)}" -output_path "${path.join(process.cwd(), "staging")}"`)
-		
+
 		try {
 			fs.copyFileSync(
 				path.join(process.cwd(), "staging", `${stagingChunkFolder}.rpkg`),
 				config.outputToSeparateDirectory
-					? path.join(process.cwd(), "Output", allRPKGTypes[stagingChunkFolder] === "base" ? `${stagingChunkFolder}.rpkg` : `${stagingChunkFolder}patch${chunks.chunk}.rpkg`)
-					: path.join(config.runtimePath, allRPKGTypes[stagingChunkFolder] === "base" ? `${stagingChunkFolder}.rpkg` : `${stagingChunkFolder}patch${chunks.chunk}.rpkg`)
+					? path.join(process.cwd(), "Output", allRPKGTypes[stagingChunkFolder] === "base" ? `${stagingChunkFolder}.rpkg` : `${stagingChunkFolder}patch305.rpkg`)
+					: path.join(config.runtimePath, allRPKGTypes[stagingChunkFolder] === "base" ? `${stagingChunkFolder}.rpkg` : `${stagingChunkFolder}patch305.rpkg`)
 			)
-		} 
-
-		catch {
+		} catch {
 			await logger.error("Couldn't copy the RPKG files! Make sure the game isn't running when you deploy your mods.")
 		}
 	}
-	
-	//
-		});
-		});
-	//
 
 	sentryRPKGGenerationTransaction.finish()
 
@@ -2612,3 +2603,4 @@ export default async function deploy(
 
 	return { lastServerSideStates }
 }
+
