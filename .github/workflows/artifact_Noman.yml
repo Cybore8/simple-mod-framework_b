@@ -54,8 +54,7 @@ jobs:
           New-Item -ItemType Directory dist
           New-Item -ItemType Directory dist/API
           robocopy "./For Build" ./dist /COPYALL /E; if ($lastexitcode -lt 8) { $global:LASTEXITCODE = $null }
-          robocopy ./compiled ./dist/API /COPYALL /E *.d.ts; if ($lastexitcode -lt 8) { $global:LASTEXITCODE = $null }
-          robocopy ".\Mod Manager\dist\win-unpacked" "./dist/Mod Manager" /COPYALL /E; if ($lastexitcode -lt 8) { $global:LASTEXITCODE = $null }
+          robocopy ./compiled ./dist/API /COPYALL /E *.d.ts; if ($lastexitcode -lt 8) { $global:LASTEXITCODE = $null }}
           copy Deploy.exe dist
 
       - name: Zip
