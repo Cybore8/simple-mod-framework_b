@@ -2572,8 +2572,17 @@ export default async function deploy(
 			fs.copyFileSync(
 				path.join(process.cwd(), "staging", `${stagingChunkFolder}.rpkg`),
 				config.outputToSeparateDirectory
-					? path.join(process.cwd(), "Output", allRPKGTypes[stagingChunkFolder] === "base" ? `${stagingChunkFolder}.rpkg` : `${stagingChunkFolder}patch300.rpkg`)
-					: path.join(config.runtimePath, allRPKGTypes[stagingChunkFolder] === "base" ? `${stagingChunkFolder}.rpkg` : `${stagingChunkFolder}patch300.rpkg`)
+		//	
+		fs.readFile("param.json", "utf-8", (err, data) => {
+		let jsonData = JSON.parse(data);
+		jsonData.forEach((chunks) => {
+		//		
+					? path.join(process.cwd(), "Output", allRPKGTypes[stagingChunkFolder] === "base" ? `${stagingChunkFolder}.rpkg` : `${stagingChunkFolder}patch${chunks.chunk}.rpkg`)
+					: path.join(config.runtimePath, allRPKGTypes[stagingChunkFolder] === "base" ? `${stagingChunkFolder}.rpkg` : `${stagingChunkFolder}patch${chunks.chunk}.rpkg`)
+		//
+		});
+		});
+		//
 			)
 		} catch {
 			await logger.error("Couldn't copy the RPKG files! Make sure the game isn't running when you deploy your mods.")

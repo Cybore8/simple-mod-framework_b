@@ -210,11 +210,21 @@ async function doTheThing() {
 			if (chunkPatchFile.includes("patch")) {
 				const chunkPatchNumberMatches = [...chunkPatchFile.matchAll(/chunk[0-9]*patch([0-9]*)\.rpkg/g)]
 				const chunkPatchNumber = parseInt(chunkPatchNumberMatches[chunkPatchNumberMatches.length - 1][chunkPatchNumberMatches[chunkPatchNumberMatches.length - 1].length - 1])
+		//	
+		fs.readFile("param.json", "utf-8", (err, data) => {
+		let jsonData = JSON.parse(data);
+		jsonData.forEach((chunks) => {
+		//	
 
-				if (chunkPatchNumber >= 200 && chunkPatchNumber <= 300) {
+				if (chunkPatchNumber >= `${chunks.chunkl}` && chunkPatchNumber <= `${chunks.chunkh}`) {
 					// The mod framework manages patch files between 200 (inc) and 300 (inc), allowing mods to place runtime files in those ranges
 					fs.rmSync(path.join(core.config.runtimePath, chunkPatchFile))
 				}
+		//
+		});
+		});
+		//
+				
 			} else if (parseInt(chunkPatchFile.split(".")[0].slice(5)) > 29) {
 				fs.rmSync(path.join(core.config.runtimePath, chunkPatchFile))
 			}
