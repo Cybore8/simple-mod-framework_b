@@ -191,8 +191,8 @@ export default async function discover(): Promise<{ [x: string]: { hash: string;
 					manifest.thumbs || (manifest.thumbs = [])
 					option.thumbs && manifest.thumbs.push(...option.thumbs)
 					
-					manifest.thumbs || (manifest.thumbs = [])
-					option.thumbsb && manifest.thumbs.push(...option.thumbsb)
+					manifest.thumbsb || (manifest.thumbsb = [])
+					option.thumbsb && manifest.thumbsb.push(...option.thumbsb)
 
 					option.scripts && scripts.push(option.scripts)
 				}
