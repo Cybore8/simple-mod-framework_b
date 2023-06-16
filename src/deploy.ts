@@ -2572,6 +2572,14 @@ export default async function deploy(
 		op: "stage",
 		description: "RPKG generation"
 	})
+	
+	//	
+	const fs = require('fs');
+	fs.readFile("param.json", "utf-8", (err, data) => {
+	let jsonData = JSON.parse(data);
+	jsonData.forEach((chunks) => {
+	//	
+	
 	configureSentryScope(sentryRPKGGenerationTransaction)
 	for (const stagingChunkFolder of fs.readdirSync(path.join(process.cwd(), "staging"))) {
 		await callRPKGFunction(`-generate_rpkg_quickly_from "${path.join(process.cwd(), "staging", stagingChunkFolder)}" -output_path "${path.join(process.cwd(), "staging")}"`)
@@ -2580,13 +2588,18 @@ export default async function deploy(
 			fs.copyFileSync(
 				path.join(process.cwd(), "staging", `${stagingChunkFolder}.rpkg`),
 				config.outputToSeparateDirectory
-					? path.join(process.cwd(), "Output", allRPKGTypes[stagingChunkFolder] === "base" ? `${stagingChunkFolder}.rpkg` : `${stagingChunkFolder}patch305.rpkg`)
-					: path.join(config.runtimePath, allRPKGTypes[stagingChunkFolder] === "base" ? `${stagingChunkFolder}.rpkg` : `${stagingChunkFolder}patch305.rpkg`)
+					? path.join(process.cwd(), "Output", allRPKGTypes[stagingChunkFolder] === "base" ? `${stagingChunkFolder}.rpkg` : `${stagingChunkFolder}patch${chunks.chunk}.rpkg`)
+					: path.join(config.runtimePath, allRPKGTypes[stagingChunkFolder] === "base" ? `${stagingChunkFolder}.rpkg` : `${stagingChunkFolder}patch${chunks.chunk}.rpkg`)
 			)
 		} catch {
 			await logger.error("Couldn't copy the RPKG files! Make sure the game isn't running when you deploy your mods.")
 		}
 	}
+	
+	//
+	});
+	});
+	//
 
 	sentryRPKGGenerationTransaction.finish()
 
