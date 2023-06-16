@@ -1,4 +1,4 @@
-name: Create Artifact
+name: Create Artifact_B
 
 on:
   workflow_dispatch
