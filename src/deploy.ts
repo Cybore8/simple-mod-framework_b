@@ -2570,7 +2570,6 @@ export default async function deploy(
 	await logger.info("Generating RPKGs")
 	
 	//const data = fs.readFileSync('./param.txt');
-	const fs = require('fs');
 	const paramfile = fs.readFileSync('./param.json', 'utf8');
 	const param = JSON.parse(paramfile);	
 	const sentryRPKGGenerationTransaction = sentryTransaction.startChild({
