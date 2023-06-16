@@ -2567,20 +2567,20 @@ export default async function deploy(
 	/*                                         Generate RPKGs                                         */
 	/* ---------------------------------------------------------------------------------------------- */
 	await logger.info("Generating RPKGs")
+	
+	const fs = require('fs')
 
 	const sentryRPKGGenerationTransaction = sentryTransaction.startChild({
 		op: "stage",
 		description: "RPKG generation"
 	})
 	
-	//	
-	const fs = require('fs');
-	fs.readFile("param.json", "utf-8", (err, data) => {
-	let jsonData = JSON.parse(data);
-	jsonData.forEach((chunks) => {
-	//	
-	
 	configureSentryScope(sentryRPKGGenerationTransaction)
+	
+	fs.readFile("param.json", "utf-8", (err, data) => {
+	let jsonData = JSON.parse(data)
+	jsonData.forEach((chunks) => {
+	
 	for (const stagingChunkFolder of fs.readdirSync(path.join(process.cwd(), "staging"))) {
 		await callRPKGFunction(`-generate_rpkg_quickly_from "${path.join(process.cwd(), "staging", stagingChunkFolder)}" -output_path "${path.join(process.cwd(), "staging")}"`)
 
@@ -2595,12 +2595,9 @@ export default async function deploy(
 			await logger.error("Couldn't copy the RPKG files! Make sure the game isn't running when you deploy your mods.")
 		}
 	}
+	})
+	})
 	
-	//
-	});
-	});
-	//
-
 	sentryRPKGGenerationTransaction.finish()
 
 	fs.removeSync(path.join(process.cwd(), "staging"))
