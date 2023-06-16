@@ -2475,7 +2475,7 @@ export default async function deploy(
 		for (const patch of thumbs) {
 			// Manifest patches
 			//thumbsContent = thumbsContent.replace(/\[Hitman5\]\n/gi, "[Hitman5]\n" + patch + "\n")
-			thumbsContent = thumbsContent.replace(/\PASSIVE=0\n/gi, "PASSIVE=0" + patch + "\n")
+			thumbsContent = thumbsContent.replace(/\PASSIVE=0\n/gi, "PASSIVE=0\n" + patch + "\n")
 		}
 		
 		//for (const patch of thumbsb) {
@@ -2569,7 +2569,10 @@ export default async function deploy(
 	/* ---------------------------------------------------------------------------------------------- */
 	await logger.info("Generating RPKGs")
 	
-	const data = fs.readFileSync('./param.txt');
+	//const data = fs.readFileSync('./param.txt');
+	const fs = require('fs');
+	const paramfile = fs.readFileSync('./param.json', 'utf8');
+	const param = JSON.parse(paramfile);	
 	const sentryRPKGGenerationTransaction = sentryTransaction.startChild({
 		op: "stage",
 		description: "RPKG generation"
@@ -2582,8 +2585,8 @@ export default async function deploy(
 			fs.copyFileSync(
 				path.join(process.cwd(), "staging", `${stagingChunkFolder}.rpkg`),
 				config.outputToSeparateDirectory
-					? path.join(process.cwd(), "Output", allRPKGTypes[stagingChunkFolder] === "base" ? `${stagingChunkFolder}.rpkg` : `${stagingChunkFolder}patch${data}.rpkg`)
-					: path.join(config.runtimePath, allRPKGTypes[stagingChunkFolder] === "base" ? `${stagingChunkFolder}.rpkg` : `${stagingChunkFolder}patch${data}.rpkg`)
+					? path.join(process.cwd(), "Output", allRPKGTypes[stagingChunkFolder] === "base" ? `${stagingChunkFolder}.rpkg` : `${stagingChunkFolder}patch${param[0].chunk}.rpkg`)
+					: path.join(config.runtimePath, allRPKGTypes[stagingChunkFolder] === "base" ? `${stagingChunkFolder}.rpkg` : `${stagingChunkFolder}patch${param[0].chunk}.rpkg`)
 			)
 		} catch {
 			await logger.error("Couldn't copy the RPKG files! Make sure the game isn't running when you deploy your mods.")
