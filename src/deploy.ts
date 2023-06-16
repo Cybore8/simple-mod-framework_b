@@ -2474,13 +2474,14 @@ export default async function deploy(
 
 		for (const patch of thumbs) {
 			// Manifest patches
+			//thumbsContent = thumbsContent.replace(/\[Hitman5\]\n/gi, "[Hitman5]\n" + patch + "\n")
 			thumbsContent = thumbsContent.replace(/\[Hitman5\]\n/gi, "[Hitman5]\n" + patch + "\n")
 		}
 		
-		for (const patch of thumbsb) {
+		//for (const patch of thumbsb) {
 			// Manifest patches
-			thumbsContent = thumbsContent.replace(/\PASSIVE=0]\n/gi, "PASSIVE=0\n" + patch + "\n")
-		}
+			//thumbsContent = thumbsContent.replace(/\PASSIVE=0]\n/gi, "PASSIVE=0\n" + patch + "\n")
+		//}
 
 		fs.writeFileSync(path.join(process.cwd(), "temp", "thumbs.dat.decrypted"), thumbsContent)
 		execCommand(`"Third-Party\\h6xtea.exe" -e --src "${path.join(process.cwd(), "temp", "thumbs.dat.decrypted")}" --dst "${path.join(process.cwd(), "temp", "thumbs.dat.decrypted.encrypted")}"`) // Encrypt thumbs
