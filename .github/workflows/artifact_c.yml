@@ -18,14 +18,14 @@ jobs:
 
       - name: Cache
         id: cache
-        uses: buildjet/cache@v3
+        uses: actions/cache@v2.1.6
         with:
           path: node_modules
           key: buildCachev25
 
       - name: Cache
         id: cache2
-        uses: buildjet/cache@v3
+        uses: actions/cache@v2.1.6
         with:
           path: Mod Manager/node_modules
           key: buildCache2v20
