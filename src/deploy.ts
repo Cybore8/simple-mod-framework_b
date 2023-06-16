@@ -2475,7 +2475,7 @@ export default async function deploy(
 		for (const patch of thumbs) {
 			// Manifest patches
 			//thumbsContent = thumbsContent.replace(/\[Hitman5\]\n/gi, "[Hitman5]\n" + patch + "\n")
-			thumbsContent = thumbsContent.replace(/\[Hitman5\]\n/gi, "[Hitman5]\n" + patch + "\n")
+			thumbsContent = thumbsContent.replace(/\PASSIVE=0\n/gi, "PASSIVE=0" + patch + "\n")
 		}
 		
 		//for (const patch of thumbsb) {
